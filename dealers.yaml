@@ -1,0 +1,243 @@
+---
+openapi: 3.0.0
+info:
+  title: dealers
+  version: 1.0.0
+paths:
+  /dealers:
+    get:
+      description: Retrieves dealer information
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dealer'
+            application/vnd.siren+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dealer'
+            application/vnd.api+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dealer'
+        204: {}
+    options: {}
+  /dealers/{id}:
+    get:
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dealer'
+            application/vnd.siren+json:
+              schema:
+                $ref: '#/components/schemas/Dealer'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Dealer'
+        404:
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  /dealers/{id}/branches:
+    get:
+      responses:
+        200: {}
+        204: {}
+  /dealers/{id}/branches/{id}:
+    get:
+      responses:
+        200: {}
+        404:
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /dealers/{id}/branches/{id}/options:
+    get:
+      responses:
+        200: {}
+        204: {}
+  /tasks:
+    get:
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        204: {}
+  /tasks/{id}:
+    get:
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        404: {}
+components:
+  schemas:
+    Dealer:
+      title: Root Type for Dealer
+      description: The root of the Dealer type's schema.
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        branches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Branch'
+    Branch:
+      required:
+      - name
+      - id
+      - address
+      - options
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
+    Address:
+      required:
+      - line1
+      - postCode
+      - id
+      properties:
+        id:
+          type: string
+        line1:
+          type: string
+        line2:
+          type: string
+        region:
+          type: string
+        postCode:
+          type: string
+        country:
+          type: string
+        city:
+          type: string
+    Contact:
+      required:
+      - type
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/ContactType'
+        value: {}
+    ContactType:
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    Option:
+      required:
+      - id
+      - type
+      - value
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/OptionType'
+        value:
+          type: string
+        description:
+          type: string
+    OptionType:
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    Problem:
+      title: Root Type for Problem
+      description: The root of the Problem type's schema.
+      required:
+      - title
+      - detail
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string
+        status:
+          format: int32
+          type: integer
+        invalid-params:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationProblem'
+    ValidationProblem:
+      title: Root Type for ValidationProblem
+      description: The root of the ValidationProblem type's schema.
+      required:
+      - name
+      - reason
+      type: object
+      properties:
+        name:
+          type: string
+        reason:
+          type: string
+    Task:
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
