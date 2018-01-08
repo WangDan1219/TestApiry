@@ -1,0 +1,243 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "bookings",
+		"description": "Ownership Booking API",
+		"version": "1.0.0"
+	},
+	"paths": {
+		"/bookings": {
+			"get": {
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/Booking"
+									}
+								}
+							}
+						}
+					},
+					"204": {}
+				}
+			}
+		},
+		"/bookings/{id}": {
+			"get": {
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Booking"
+								}
+							}
+						}
+					},
+					"404": {}
+				}
+			},
+			"post": {
+				"responses": {
+					"201": {},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Problem"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Booking"
+							}
+						}
+					},
+					"required": true
+				}
+			}
+		},
+		"/tasks": {
+			"get": {
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/Task"
+									}
+								}
+							}
+						}
+					},
+					"204": {}
+				}
+			}
+		},
+		"/tasks/{id}": {
+			"get": {
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Task"
+								}
+							}
+						}
+					},
+					"404": {}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"Booking": {
+				"required": [
+					"customerId",
+					"vehicleId",
+					"dateTime",
+					"dealerId",
+					"preferences",
+					"tasks",
+					"status"
+				],
+				"properties": {
+					"customerId": {
+						"type": "string"
+					},
+					"vehicleId": {
+						"type": "string"
+					},
+					"dealerId": {
+						"type": "string"
+					},
+					"dateTime": {
+						"type": "number"
+					},
+					"preferences": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/Preference"
+						}
+					},
+					"tasks": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"status": {
+						"$ref": "#/components/schemas/Status"
+					}
+				}
+			},
+			"Preference": {
+				"required": [
+					"type",
+					"value"
+				],
+				"properties": {
+					"type": {
+						"type": "string"
+					},
+					"value": {
+						"type": "string"
+					}
+				}
+			},
+			"Status": {
+				"required": [
+					"id",
+					"value"
+				],
+				"properties": {
+					"value": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					}
+				}
+			},
+			"ValidationProblem": {
+				"title": "Root Type for ValidationProblem",
+				"description": "The root of the ValidationProblem type's schema.",
+				"required": [
+					"name",
+					"reason"
+				],
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"reason": {
+						"type": "string"
+					}
+				}
+			},
+			"Problem": {
+				"title": "Root Type for Problem",
+				"description": "The root of the Problem type's schema.",
+				"required": [
+					"title",
+					"detail"
+				],
+				"type": "object",
+				"properties": {
+					"type": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"detail": {
+						"type": "string"
+					},
+					"instance": {
+						"type": "string"
+					},
+					"status": {
+						"format": "int32",
+						"type": "integer"
+					},
+					"invalid-params": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ValidationProblem"
+						}
+					}
+				}
+			},
+			"Task": {
+				"required": [
+					"id",
+					"name"
+				],
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	}
+}
